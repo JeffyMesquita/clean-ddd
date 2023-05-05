@@ -71,3 +71,9 @@ e.g.:
 ```bash
   $ mkdir repositories
 ```
+
+#### 10. Install dayjs for date manipulation
+
+```bash
+  $ npm i dayjs
+```
