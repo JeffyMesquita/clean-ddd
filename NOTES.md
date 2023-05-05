@@ -65,3 +65,9 @@ e.g.:
 ```bash
   $ npm i vitest -D
 ```
+
+#### 9. Create a repositories folder
+
+```bash
+  $ mkdir repositories
+```
