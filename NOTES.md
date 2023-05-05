@@ -77,3 +77,45 @@ e.g.:
 ```bash
   $ npm i dayjs
 ```
+
+#### 11. In tsconfig.json, add the following lines
+
+```json
+  "baseUrl": "./",  
+  "paths": {
+    "@/*": ["./src/*"]
+  }, 
+```
+
+#### 12. Install vite-tsconfig-paths for tsconfig.json paths to work
+
+```bash
+  $  npm i vite-tsconfig-paths -D
+```
+
+#### 13. Create a vite.config.ts file
+
+```bash
+  $ touch vite.config.ts
+```
+
+#### 14. In vite.config.ts, add the following lines
+
+```ts
+  import { defineConfig } from 'vite';
+  import tsconfigPaths from 'vite-tsconfig-paths';
+
+  export default defineConfig({
+    plugins: [tsconfigPaths()],
+    test: {
+      globals: true,
+    }
+  });
+```
+
+#### 15. In tsconfig.json, add the following lines
+
+```json
+  "types": ["vitest/globals"]
+```
+
