@@ -81,10 +81,10 @@ e.g.:
 #### 11. In tsconfig.json, add the following lines
 
 ```json
-  "baseUrl": "./",  
+  "baseUrl": "./",
   "paths": {
     "@/*": ["./src/*"]
-  }, 
+  },
 ```
 
 #### 12. Install vite-tsconfig-paths for tsconfig.json paths to work
@@ -102,15 +102,15 @@ e.g.:
 #### 14. In vite.config.ts, add the following lines
 
 ```ts
-  import { defineConfig } from 'vite';
-  import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
-  export default defineConfig({
-    plugins: [tsconfigPaths()],
-    test: {
-      globals: true,
-    }
-  });
+export default defineConfig({
+  plugins: [tsconfigPaths()],
+  test: {
+    globals: true,
+  },
+});
 ```
 
 #### 15. In tsconfig.json, add the following lines
@@ -119,3 +119,46 @@ e.g.:
   "types": ["vitest/globals"]
 ```
 
+#### 16. Install and configure ESLint
+
+```bash
+  $ npm i eslint @rocketseat/eslint-config -D
+```
+
+#### 17. create a .eslintrc.json file
+
+```bash
+  $ touch .eslintrc.json
+```
+
+#### 18. In .eslintrc.json, add the following lines
+
+```json
+{
+  "extends": [
+    "@rocketseat/eslint-config/node",
+    "plugin:vitest-globals/recommended"
+  ],
+  "rules": {
+    "no-useless-constructor": "off"
+  },
+  "env": {
+    "vitest-globals/env": true
+  }
+}
+```
+
+#### 19. In package.json, add the following lines
+
+```json
+  "scripts": {
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
+  }
+```
+
+#### 20. Install eslint-plugin-vitest-globals for ESLint to recognize vitest globals
+
+```bash
+  $ npm i eslint-plugin-vitest-globals -D
+```
