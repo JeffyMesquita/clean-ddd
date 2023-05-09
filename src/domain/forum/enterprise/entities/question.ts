@@ -5,7 +5,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { Entity } from '@/core/entities/entity';
 import { Optional } from '@/@types/optional';
 
-interface QuestionProps {
+export interface QuestionProps {
   authorId: UniqueEntityID;
   bestAnswerId?: UniqueEntityID;
   title: string;
