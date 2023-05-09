@@ -1,6 +1,5 @@
 import { Question } from '../../enterprise/entities/question';
 import { QuestionsRepository } from '../repositories/question-repository';
-import { AnswerQuestionUseCase } from './answer-question';
 import { CreateQuestionUseCase } from './create-question';
 
 const fakeQuestionRepository: QuestionsRepository = {
