@@ -1,19 +1,25 @@
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository';
 import { AnswerQuestionUseCase } from './answer-question';
-import { AnswersRepository } from '../repositories/answers-repository';
-import { Answer } from '../../enterprise/entities/answer';
 
-const fakeAnswersRepository: AnswersRepository = {
-  create: async (answer: Answer) => {},
-};
+let inMemoryAnswersRepository: InMemoryAnswersRepository;
+let sut: AnswerQuestionUseCase;
+// sut = system under test
 
-test('create an answer to a question', async () => {
-  const answerQuestion = new AnswerQuestionUseCase(fakeAnswersRepository);
-
-  const answer = await answerQuestion.execute({
-    questionId: 'question-id',
-    instructorId: 'instructor-id',
-    content: 'New answer',
+describe('Create Question', () => {
+  beforeEach(() => {
+    inMemoryAnswersRepository = new InMemoryAnswersRepository();
+    sut = new AnswerQuestionUseCase(inMemoryAnswersRepository);
   });
 
-  expect(answer.content).toEqual('New answer');
+  it('should be able to create a question', async () => {
+    const { answer } = await sut.execute({
+      questionId: 'question-id',
+      instructorId: 'instructor-id',
+      content: 'Content of the answer',
+    });
+
+    expect(answer.id).toBeTruthy();
+    expect(answer.content).toEqual('Content of the answer');
+    expect(inMemoryAnswersRepository.items[0].id).toEqual(answer.id);
+  });
 });
