@@ -162,3 +162,9 @@ export default defineConfig({
 ```bash
   $ npm i eslint-plugin-vitest-globals -D
 ```
+
+#### 21. Install faker for generating fake data
+
+```bash
+  $ npm i faker-js/faker -D
+```
