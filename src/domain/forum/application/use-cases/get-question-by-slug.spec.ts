@@ -17,6 +17,9 @@ describe('Create Question', () => {
     const newQuestion = makeQuestion({
       slug: Slug.create('title-of-the-question'),
     });
+
+    console.log(newQuestion);
+
     await inMemoryQuestionsRepository.create(newQuestion);
 
     const { question } = await sut.execute({
