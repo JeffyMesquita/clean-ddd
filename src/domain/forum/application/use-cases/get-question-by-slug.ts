@@ -1,7 +1,7 @@
+import { Question } from '@/domain/forum/enterprise/entities/question';
 import { Either, left, right } from '@/core/either';
-import { Question } from '../../enterprise/entities/question';
+import { ResourceNotFoundError } from '@/domain/forum/application/use-cases/errors/resource-not-found-error';
 import { QuestionsRepository } from '../repositories/question-repository';
-import { ResourceNotFoundError } from './errors/resource-not-found-error';
 
 interface GetQuestionBySlugUseCaseRequest {
   slug: string;
@@ -26,6 +26,8 @@ export class GetQuestionBySlugUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    return right({ question });
+    return right({
+      question,
+    });
   }
 }
