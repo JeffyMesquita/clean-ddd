@@ -1,44 +1,45 @@
-import { makeQuestionComment } from 'test/factories/make-question-comment';
-import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository';
-import { DeleteQuestionCommentUseCase } from './delete-question-comment';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { makeAnswerComment } from 'test/factories/make-answer-comment';
+import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository';
+import { DeleteAnswerCommentUseCase } from './delete-answer-comments';
+import { NotAllowedError } from './errors/not-allowed-error';
 
-let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository;
-let sut: DeleteQuestionCommentUseCase;
+let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository;
+let sut: DeleteAnswerCommentUseCase;
 // sut = system under test
 
 describe('Delete Question Comment', () => {
   beforeEach(() => {
-    inMemoryQuestionCommentsRepository =
-      new InMemoryQuestionCommentsRepository();
-    sut = new DeleteQuestionCommentUseCase(inMemoryQuestionCommentsRepository);
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository();
+    sut = new DeleteAnswerCommentUseCase(inMemoryAnswerCommentsRepository);
   });
 
   it('should be able to delete a question comment', async () => {
-    const questionComment = makeQuestionComment();
+    const answerComment = makeAnswerComment();
 
-    await inMemoryQuestionCommentsRepository.create(questionComment);
+    await inMemoryAnswerCommentsRepository.create(answerComment);
 
     await sut.execute({
-      questionCommentId: questionComment.id.toString(),
-      authorId: questionComment.authorId.toString(),
+      answerCommentId: answerComment.id.toString(),
+      authorId: answerComment.authorId.toString(),
     });
 
-    expect(inMemoryQuestionCommentsRepository.items).toHaveLength(0);
+    expect(inMemoryAnswerCommentsRepository.items).toHaveLength(0);
   });
 
   it('should not be able to delete another user question comment', async () => {
-    const questionComment = makeQuestionComment({
+    const answerComment = makeAnswerComment({
       authorId: new UniqueEntityID('author-1'),
     });
 
-    await inMemoryQuestionCommentsRepository.create(questionComment);
+    await inMemoryAnswerCommentsRepository.create(answerComment);
 
-    expect(async () => {
-      return await sut.execute({
-        questionCommentId: questionComment.id.toString(),
-        authorId: 'another-user-id',
-      });
-    }).rejects.toBeInstanceOf(Error);
+    const result = await sut.execute({
+      answerCommentId: answerComment.id.toString(),
+      authorId: 'another-user-id',
+    });
+
+    expect(result.isLeft()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });
