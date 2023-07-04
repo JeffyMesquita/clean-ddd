@@ -168,3 +168,9 @@ export default defineConfig({
 ```bash
   $ npm i faker-js/faker -D
 ```
+
+#### 22. To validate Typescript errors run the following command
+
+```bash
+  $ npx tsc --noEmit
+```
