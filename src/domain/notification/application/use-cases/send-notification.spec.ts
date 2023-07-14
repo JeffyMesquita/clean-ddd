@@ -2,7 +2,6 @@ import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-not
 import { SendNotificationUseCase } from './send-notification';
 
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
-
 let sut: SendNotificationUseCase;
 // sut = system under test
 
