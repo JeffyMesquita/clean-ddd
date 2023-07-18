@@ -12,7 +12,7 @@ import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memo
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository';
 import { waitFor } from 'test/utils/wait-for';
 import { SpyInstance } from 'vitest';
-import { OnAnswerCreated } from './on-answer-created';
+import { OnQuestionBestAnswerChosen } from './on-question-best-answer-chosen';
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
@@ -26,7 +26,7 @@ let sendNotificationExecuteSpy: SpyInstance<
   Promise<SendNotificationUseCaseResponse>
 >;
 
-describe('On answer created', () => {
+describe('On Question Best Answer Chosen', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository();
@@ -47,10 +47,13 @@ describe('On answer created', () => {
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute');
 
-    new OnAnswerCreated(inMemoryQuestionsRepository, sendNotificationUseCase);
+    new OnQuestionBestAnswerChosen(
+      inMemoryAnswersRepository,
+      sendNotificationUseCase
+    );
   });
 
-  it('should sen a notification when an answer is created', async () => {
+  it('should sen a notification when question has new best answer chosen', async () => {
     // Create the question
     const question = makeQuestion();
 
@@ -62,6 +65,10 @@ describe('On answer created', () => {
     await inMemoryQuestionsRepository.create(question);
     // shoot the event, and call `OnAnswerCreated` handler consequently (see `setupSubscriptions` method)
     await inMemoryAnswersRepository.create(answer);
+
+    question.bestAnswerId = answer.id;
+
+    await inMemoryQuestionsRepository.save(question);
 
     await waitFor(() => {
       expect(sendNotificationExecuteSpy).toHaveBeenCalled();
